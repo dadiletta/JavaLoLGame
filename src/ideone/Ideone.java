@@ -1,27 +1,39 @@
-package ideone;
+package ideone; //do not include on Ideone.com
 
 import java.util.Scanner; //allows me to take in input
 
+/**
+ * Console League of Legends
+ * A game that demonstrates aggregate, instantiated objects and encapsulation
+ * @author adilettad
+ */
 public class Ideone {
 	public static void main(String[] args) {
 
-		player = new Champion()
-		npc = new Champion(true)
-		// playerturn boolean
-		// attack(playerTurn, player, npc)
+            //REQUIRED: Create at least one instance of a custom class
+            Champion player = new Champion();
+            Champion npc = new Champion(true);
+            boolean player1 = true;
 		
-		System.out.println("Still works!");
-            while((player.getHealth() > 0) && (nps.getHealth() > 0)){
-                //attack
+            //REQUIRED: Some type of game loop.. this one repeats...
+            //...so long as both players' health is above 0
+            while((player.getHealth() > 0) && (npc.getHealth() > 0)){
+                // attack(playerTurn, player, npc)
                 // whoseTurn(playerTurn)
             }
-            //announce winner
+            //announce winner... this only runs when the loop is broken b/c...
+            //...a player was defeated
 	}
-}
+} //closes the Ideone class
 
-class Champion // if this class was in a separate file it would need to be called public
+/**
+ * REQUIRED: A custom class with all private attributes. One of those...
+ * attributes must be a second custom class. 
+ * @author adilettad
+ */
+class Champion 
 {
-
+        //REQUIRED: Your custom class has all private attributes
 	private int health = 0;
 	private String name;
 	private Weapon arm;
@@ -51,6 +63,11 @@ class Champion // if this class was in a separate file it would need to be calle
 
 	}
         
+        /**
+         * This is the character selection option, using a switch instead
+         * of a long series of IF statements
+         * @param opt 
+         */
         private void pickHero(int opt){
             switch (opt){
                 case 1: name = "Braum";
@@ -68,6 +85,8 @@ class Champion // if this class was in a separate file it would need to be calle
             }
         }
         
+        //REQUIRED: Helper assets. These are used to provide access to the...
+        //...private data
 	public int getHealth() {
             return health;
 	}
@@ -86,9 +105,14 @@ class Champion // if this class was in a separate file it would need to be calle
 
 } // closes Champion
 
+/**
+ * REQUIRED: A second class that is used by the first custom class.
+ * @author adilettad
+ */
 class Weapon {
 
-	private int dmg; // let's learn to manage private functions
+        //REQUIRED: This second class has all private attributes too
+	private int dmg;
 	private String name;
 
 	public Weapon(String playername) // this is constructor #1
@@ -96,19 +120,17 @@ class Weapon {
 		dmg = 20;
 	}
 
-	public Weapon(String playername, boolean isacomputer) // this is an overloaded constructor. This gets called if I pass 2 params
-	{
-
-	}
-
-	public int getDmg() { // THIS IS CALLED A HELPER ASSET because they help you
-							// access private variables
+        /**
+         * REQUIRED: Helper asset on the custom class that is used by our
+         * primary class
+         * @return The damage the weapon deals
+         */
+	public int getDmg() { 
 		return dmg;
 	}
 
-	public String getName() { // another helper asset helping a different
-								// private variable
+	public String getName() { 
 		return name;
 	}
 
-}
+} //closes the weapon class
