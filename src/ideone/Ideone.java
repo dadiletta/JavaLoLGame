@@ -18,9 +18,20 @@ public class Ideone {
 		
             //REQUIRED: Some type of game loop.. this one repeats...
             //...so long as both players' health is above 0
+            System.out.println(player.getHealth());
+            System.out.println(npc.getHealth());
             while((player.getHealth() > 0) && (npc.getHealth() > 0)){
                 attack(player1, player, npc);
-                player1 = whoseTurn(player1, player, npc);
+                
+                //whoseTurn requires me to send the active player, need to test which
+                if(player1){
+                    player1 = whoseTurn(player1, player);
+                }else{
+                    player1 = whoseTurn(player1, npc);
+                }
+                Scanner pause = new Scanner(System.in);
+                pause.nextLine();
+                
             }
             announceWinner(player1);
 	}
@@ -33,7 +44,11 @@ public class Ideone {
          */
         public static void attack(boolean player1, Champion player, Champion npc)
         {
-            System.out.println("Attack!");
+            if(player1){
+                npc.takeDamage(player.arm.getDmg());
+            }else{
+                player.takeDamage(npc.arm.getDmg());
+            }
         }
         
         /**
@@ -43,10 +58,18 @@ public class Ideone {
          * @param npc
          * @return
          */
-        public static boolean whoseTurn(boolean player1, Champion player, Champion npc)
+        public static boolean whoseTurn(boolean player1, Champion current)
         {
-            System.out.println("Who's turn is it?");
-            return !player1;
+            Random randomGenerator = new Random();
+            int randomInt = randomGenerator.nextInt(5+current.getAS()+current.arm.getSpeed());
+            if(randomInt > 5){
+                System.out.println(current.getName()+ " gets a second turn.");
+                return player1;
+            }else{
+                System.out.println(current.getName()+ "'s turn is finished.");
+                return !player1;
+            }
+            
         }
         
         /**
@@ -74,8 +97,8 @@ class Champion
         //REQUIRED: Your custom class has all private attributes
 	private int health = 0;
 	private String name;
-	private Weapon arm;
-        private double attackspeed;
+	public Weapon arm;  //NOTICE: Must be public!
+        private int attackspeed;
 
         /**
          * First of my two overloaded constructors of the Champion class
@@ -100,7 +123,8 @@ class Champion
         {
             System.out.println("Computer player entering the game");
             Random randomGenerator = new Random();
-            int randomInt = randomGenerator.nextInt(4);
+            int randomInt = randomGenerator.nextInt(4 - 1 + 1) + 1;
+            System.out.println("Computer is picking " + randomInt + ".");
             this.pickHero(randomInt);
             this.arm = new Weapon(true);
 	}
@@ -118,15 +142,15 @@ class Champion
                         break;
                 case 2: this.name = "Morgana";
                         this.health = 100;
-                        attackspeed = 0.1;
+                        attackspeed = 1;
                         break;
                 case 3: this.name = "Jinx";
                         this.health = 90;
-                        attackspeed = 0.2;
+                        attackspeed = 2;
                         break;
                 case 4: this.name = "Zilian";
                         this.health = 80;
-                        this.attackspeed = 0.1;
+                        this.attackspeed = 1;
             }
         }
         
@@ -138,13 +162,14 @@ class Champion
 
 	public void takeDamage(int num1) {
             health -= num1;
+            System.out.println(this.name + " takes "+num1+" damage. Current health:"+ this.health);
 	}
 
 	public String getName() {
             return name;
 	}
         
-        public double getAS(){
+        public int getAS(){
             return attackspeed;
         }
 
@@ -158,7 +183,7 @@ class Weapon {
 
         //REQUIRED: This second class has all private attributes too
 	private int dmg;
-        private double speed;
+        private int speed;
 	private String name;
 
 	public Weapon() // this is constructor #1
@@ -169,18 +194,19 @@ class Weapon {
             if (opt == 1)
             {
                 dmg = 10; 
-                speed = 0.2;
+                speed = 2;
                 name = "saber";
-            }else{
+            }else
+            {
                 dmg = 20; 
-                speed = 0.1;
+                speed = 1;
                 name = "battleaxe";               
             }
 	}
         public Weapon(boolean isacomputer)
         {
             dmg = 10; 
-            speed = 0.2;
+            speed = 2;
             name = "saber";
             
         }
@@ -198,7 +224,7 @@ class Weapon {
             return name;
 	}
         
-        public double getSpeed() {
+        public int getSpeed() {
             return speed;
         }
 
